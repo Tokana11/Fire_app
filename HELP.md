@@ -1,5 +1,9 @@
 # Getting Started
 
+##Database
+```
+docker run --name fire-sql -p 3306:3306 -e MYSQL_DATABASE=fire -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=fireman -e MYSQL_PASSWORD=shlanga -d mysql:8```
+
 ### Reference Documentation
 For further reference, please consider the following sections:
 
