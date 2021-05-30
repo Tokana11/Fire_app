@@ -1,9 +1,10 @@
 package com.fire_app.fire_app.controllers;
-        import java.util.concurrent.atomic.AtomicLong;
 
-        import org.springframework.web.bind.annotation.GetMapping;
-        import org.springframework.web.bind.annotation.RequestParam;
-        import org.springframework.web.bind.annotation.RestController;
+import java.util.concurrent.atomic.AtomicLong;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HelloWorld {
@@ -13,6 +14,7 @@ public class HelloWorld {
 
     @GetMapping("/greeting")
     public String greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
-        return"Hello world";
+        return String.format("Hello %s", name);
     }
+
 }

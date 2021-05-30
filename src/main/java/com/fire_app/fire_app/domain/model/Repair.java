@@ -6,7 +6,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "repairs_history")
-public class Repairs {
+public class Repair {
     @Id
     @GeneratedValue
     private Long Id;
@@ -21,13 +21,14 @@ public class Repairs {
     private Date date;
 
     @ManyToOne
+    @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Repairs repairs = (Repairs) o;
+        Repair repairs = (Repair) o;
         return Double.compare(repairs.price, price) == 0 &&
                 Id.equals(repairs.Id) &&
                 Objects.equals(repairDescription, repairs.repairDescription) &&

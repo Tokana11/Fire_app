@@ -53,6 +53,7 @@ public class Service {
     private double antiFreezeVolume;
 
     @ManyToOne
+    @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
 
     @Override

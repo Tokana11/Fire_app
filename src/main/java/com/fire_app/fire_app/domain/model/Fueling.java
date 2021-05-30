@@ -20,6 +20,10 @@ public class Fueling {
     @Column(name = "date")
     private Date date;
 
+    @ManyToOne
+    @JoinColumn(name = "vehicle_id")
+    private Vehicle vehicle;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -77,6 +81,4 @@ public class Fueling {
         this.vehicle = vehicle;
     }
 
-    @ManyToOne
-    private Vehicle vehicle;
 }
