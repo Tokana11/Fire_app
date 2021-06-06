@@ -3,15 +3,16 @@ package com.fire_app.fire_app.controllers;
 import com.fire_app.fire_app.REST.RepairsRepository;
 import com.fire_app.fire_app.REST.VehicleRepository;
 import com.fire_app.fire_app.domain.model.Repair;
-import com.fire_app.fire_app.domain.model.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping(value = "/repairs", produces = "application/json")
@@ -26,16 +27,19 @@ public class RepairsController {
         this.vehicleRepository = vehicleRepository;
     }
 
-//    @RequestMapping(value = "/{regNumber}", method = RequestMethod.GET)
-//    public Optional<List<Repair>> getRepairsHistory(@PathVariable(name = "regNumber") String regNumber) {
-//        try {
-//            Vehicle vehicle = vehicleRepository.findByRegNumber(regNumber);
-//            if(vehicle != null){
-//                List<Repair> repairs = repairsRepository.findAll();
-//
-//            }
-//        }catch (Exception e){
-//            return null;
-//        }
-//    }
+    @GetMapping
+    public ResponseEntity<List<Repair>> findAll(){
+        List<Repair> repairs = repairsRepository.findAll();
+        return new ResponseEntity<>(repairs,HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{regNumber}")
+    public ResponseEntity getRepairsHistory(@PathVariable(name = "regNumber") String regNumber) {
+        try {
+          Set<Repair> repairs = repairsRepository.findRepairsByVehicleRegNumber(regNumber);
+            return new ResponseEntity<>(repairs, HttpStatus.OK);
+        }catch (Exception e){
+            return null;
+        }
+    }
 }

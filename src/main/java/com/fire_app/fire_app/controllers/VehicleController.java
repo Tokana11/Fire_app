@@ -1,5 +1,7 @@
 package com.fire_app.fire_app.controllers;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fire_app.fire_app.domain.model.Vehicle;
 import com.fire_app.fire_app.REST.VehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +61,27 @@ public class VehicleController {
             final Vehicle newVehicle = new Vehicle();
             newVehicle.setRegNumber(vehicle.getRegNumber());
             newVehicle.setVinNumber(vehicle.getVinNumber());
-//            TODO: set all field
+            newVehicle.setBrand(vehicle.getBrand());
+            newVehicle.setModelName(vehicle.getModelName());
+            newVehicle.setEngineOil(vehicle.getEngineOil());
+            newVehicle.setEngineOilVolume(vehicle.getEngineOilVolume());
+            newVehicle.setHydraulicOil(vehicle.getHydraulicOil());
+            newVehicle.setHydraulicOilVolume(vehicle.getHydraulicOilVolume());
+            newVehicle.setPumpOil(vehicle.getPumpOil());
+            newVehicle.setPumpOilVolume(vehicle.getPumpOilVolume());
+            newVehicle.setDifferentialOil(vehicle.getDifferentialOil());
+            newVehicle.setDifferentialOilVolume(vehicle.getDifferentialOilVolume());
+            newVehicle.setGearBoxOil(vehicle.getGearBoxOil());
+            newVehicle.setGearBoxOilVolume(vehicle.getGearBoxOilVolume());
+            newVehicle.setBrakeFluid(vehicle.getBrakeFluid());
+            newVehicle.setBrakeFluidVolume(vehicle.getBrakeFluidVolume());
+            newVehicle.setAntiFreeze(vehicle.getAntiFreeze());
+            newVehicle.setAntiFreezeVolume(vehicle.getAntiFreezeVolume());
+            newVehicle.setFuel(vehicle.getFuel());
+            newVehicle.setFuelTankVolume(vehicle.getFuelTankVolume());
+            newVehicle.setWaterTankVolume(vehicle.getWaterTankVolume());
+            newVehicle.setFoamTankVolume(vehicle.getFoamTankVolume());
+            newVehicle.setTyre(vehicle.getTyre());
             vehicleRepository.saveAndFlush(newVehicle);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(newVehicle);

@@ -1,5 +1,6 @@
 package com.fire_app.fire_app.domain.model;
 
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;

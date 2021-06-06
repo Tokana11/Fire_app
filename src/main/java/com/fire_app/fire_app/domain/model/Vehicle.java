@@ -1,4 +1,5 @@
 package com.fire_app.fire_app.domain.model;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -82,6 +83,7 @@ public class Vehicle {
     private String tyre;
 
     @OneToMany(mappedBy = "vehicle")
+    @JsonManagedReference
     private Set<Repair> repairs;
 
     @OneToMany(mappedBy = "vehicle")
