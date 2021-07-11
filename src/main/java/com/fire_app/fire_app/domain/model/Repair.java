@@ -1,12 +1,14 @@
 package com.fire_app.fire_app.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "repairs_history")
+@Table(name = "repair")
 public class Repair {
     @Id
     @GeneratedValue
@@ -23,18 +25,15 @@ public class Repair {
 
     @ManyToOne
     @JoinColumn(name = "vehicle_id")
+    @JsonBackReference
     private Vehicle vehicle;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Repair repairs = (Repair) o;
-        return Double.compare(repairs.price, price) == 0 &&
-                Id.equals(repairs.Id) &&
-                Objects.equals(repairDescription, repairs.repairDescription) &&
-                Objects.equals(date, repairs.date) &&
-                Objects.equals(vehicle, repairs.vehicle);
+        Repair repair = (Repair) o;
+        return Double.compare(repair.price, price) == 0 && Id.equals(repair.Id) && Objects.equals(repairDescription, repair.repairDescription) && Objects.equals(date, repair.date) && Objects.equals(vehicle, repair.vehicle);
     }
 
     @Override

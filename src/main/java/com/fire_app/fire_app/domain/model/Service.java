@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "service_history")
+@Table(name = "service")
 public class Service {
     @Id
     @GeneratedValue

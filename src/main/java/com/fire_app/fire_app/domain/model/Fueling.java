@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "fueling_history")
+@Table(name = "fueling")
 public class Fueling {
     @Id
     @GeneratedValue

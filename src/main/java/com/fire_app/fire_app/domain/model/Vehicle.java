@@ -1,7 +1,7 @@
 package com.fire_app.fire_app.domain.model;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 import java.util.Set;
 
@@ -13,9 +13,11 @@ public class Vehicle {
     @GeneratedValue
     private Long id;
 
+    @NotBlank (message = "Register number should not be empty!")
     @Column(name = "reg_number", unique = true, nullable = false, length = 100)
     private String regNumber;
 
+    @NotBlank (message = "VIN number should not be empty!")
     @Column(name = "vin_number", unique = true, nullable = false, length = 100)
     private String vinNumber;
 
@@ -83,7 +85,6 @@ public class Vehicle {
     private String tyre;
 
     @OneToMany(mappedBy = "vehicle")
-    @JsonManagedReference
     private Set<Repair> repairs;
 
     @OneToMany(mappedBy = "vehicle")
@@ -97,12 +98,12 @@ public class Vehicle {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Vehicle vehicle = (Vehicle) o;
-        return Double.compare(vehicle.engineOilVolume, engineOilVolume) == 0 && Double.compare(vehicle.hydraulicOilVolume, hydraulicOilVolume) == 0 && Double.compare(vehicle.pumpOilVolume, pumpOilVolume) == 0 && Double.compare(vehicle.differentialOilVolume, differentialOilVolume) == 0 && Double.compare(vehicle.gearBoxOilVolume, gearBoxOilVolume) == 0 && Double.compare(vehicle.brakeFluidVolume, brakeFluidVolume) == 0 && Double.compare(vehicle.antiFreezeVolume, antiFreezeVolume) == 0 && Double.compare(vehicle.fuelTankVolume, fuelTankVolume) == 0 && waterTankVolume == vehicle.waterTankVolume && foamTankVolume == vehicle.foamTankVolume && id.equals(vehicle.id) && regNumber.equals(vehicle.regNumber) && vinNumber.equals(vehicle.vinNumber) && Objects.equals(brand, vehicle.brand) && Objects.equals(modelName, vehicle.modelName) && Objects.equals(engineOil, vehicle.engineOil) && Objects.equals(hydraulicOil, vehicle.hydraulicOil) && Objects.equals(pumpOil, vehicle.pumpOil) && Objects.equals(differentialOil, vehicle.differentialOil) && Objects.equals(gearBoxOil, vehicle.gearBoxOil) && Objects.equals(brakeFluid, vehicle.brakeFluid) && Objects.equals(antiFreeze, vehicle.antiFreeze) && Objects.equals(fuel, vehicle.fuel) && Objects.equals(tyre, vehicle.tyre) && Objects.equals(repairs, vehicle.repairs) && Objects.equals(services, vehicle.services) && Objects.equals(fuelings, vehicle.fuelings);
+        return Double.compare(vehicle.engineOilVolume, engineOilVolume) == 0 && Double.compare(vehicle.hydraulicOilVolume, hydraulicOilVolume) == 0 && Double.compare(vehicle.pumpOilVolume, pumpOilVolume) == 0 && Double.compare(vehicle.differentialOilVolume, differentialOilVolume) == 0 && Double.compare(vehicle.gearBoxOilVolume, gearBoxOilVolume) == 0 && Double.compare(vehicle.brakeFluidVolume, brakeFluidVolume) == 0 && Double.compare(vehicle.antiFreezeVolume, antiFreezeVolume) == 0 && Double.compare(vehicle.fuelTankVolume, fuelTankVolume) == 0 && waterTankVolume == vehicle.waterTankVolume && foamTankVolume == vehicle.foamTankVolume && id.equals(vehicle.id) && regNumber.equals(vehicle.regNumber) && vinNumber.equals(vehicle.vinNumber) && Objects.equals(brand, vehicle.brand) && Objects.equals(modelName, vehicle.modelName) && Objects.equals(engineOil, vehicle.engineOil) && Objects.equals(hydraulicOil, vehicle.hydraulicOil) && Objects.equals(pumpOil, vehicle.pumpOil) && Objects.equals(differentialOil, vehicle.differentialOil) && Objects.equals(gearBoxOil, vehicle.gearBoxOil) && Objects.equals(brakeFluid, vehicle.brakeFluid) && Objects.equals(antiFreeze, vehicle.antiFreeze) && Objects.equals(fuel, vehicle.fuel) && Objects.equals(tyre, vehicle.tyre);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, regNumber, vinNumber, brand, modelName, engineOil, engineOilVolume, hydraulicOil, hydraulicOilVolume, pumpOil, pumpOilVolume, differentialOil, differentialOilVolume, gearBoxOil, gearBoxOilVolume, brakeFluid, brakeFluidVolume, antiFreeze, antiFreezeVolume, fuel, fuelTankVolume, waterTankVolume, foamTankVolume, tyre, repairs, services, fuelings);
+        return Objects.hash(id, regNumber, vinNumber, brand, modelName, engineOil, engineOilVolume, hydraulicOil, hydraulicOilVolume, pumpOil, pumpOilVolume, differentialOil, differentialOilVolume, gearBoxOil, gearBoxOilVolume, brakeFluid, brakeFluidVolume, antiFreeze, antiFreezeVolume, fuel, fuelTankVolume, waterTankVolume, foamTankVolume, tyre);
     }
 
     public Long getId() {

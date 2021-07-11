@@ -1,16 +1,18 @@
 package com.fire_app.fire_app.controllers;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fire_app.fire_app.domain.model.Vehicle;
-import com.fire_app.fire_app.REST.VehicleRepository;
+import com.fire_app.fire_app.repository.VehicleRepository;
+import com.fire_app.fire_app.service.VehicleService;
+import com.fire_app.fire_app.util.ErrorMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,85 +22,69 @@ import java.util.Optional;
 @RequestMapping(value = "/vehicle")
 public class VehicleController {
 
-    private final VehicleRepository vehicleRepository;
+    private final VehicleService vehicleService;
 
     @Autowired
-    public VehicleController(VehicleRepository vehicleRepository) {
-        this.vehicleRepository = vehicleRepository;
+    public VehicleController(VehicleService vehicleService) {
+        this.vehicleService = vehicleService;
     }
 
 
     @GetMapping
     public ResponseEntity<List<Vehicle>> findAll() {
-        try {
-            List<Vehicle> vehicles = vehicleRepository.findAll();
-            return new ResponseEntity<>(vehicles, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return new ResponseEntity<>(vehicleService.getAllVehicles(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Vehicle> findById(@PathVariable("id") Long id) {
-        Optional<Vehicle> vehicle = vehicleRepository.findById(id);
-        return vehicle.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() ->
-                new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public ResponseEntity<?> findById(@PathVariable("id") Long id) {
+        Optional<Vehicle> vehicle = vehicleService.getVehicleById(id);
+        if (vehicle.isPresent()) {
+            return new ResponseEntity<>(vehicle.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new ErrorMessage("Item with id: " + id + " not found"), HttpStatus.NOT_FOUND);
+        }
     }
 
-    @GetMapping(value = "/register-number")
-    public ResponseEntity<Vehicle> findByRegNumber(@RequestParam("regNumber") String regNumber) {
-        Optional<Vehicle> vehicle = Optional.ofNullable(vehicleRepository.findByRegNumber(regNumber));
-        return vehicle.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() ->
-                new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    @GetMapping(value = "/byRegNumber/{regNumber}")
+    public ResponseEntity<?> findByRegNumber(@PathVariable("regNumber") String regNumber) {
+        Optional<Vehicle> vehicle = vehicleService.getVehicleByRegNumber(regNumber);
+        if (vehicle.isPresent()) {
+            return new ResponseEntity<>(vehicle, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new ErrorMessage("Item with register number: " + regNumber + " not found !"),
+                    HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping
-    public ResponseEntity<Vehicle> createNewVehicle(@RequestBody Vehicle vehicle) {
-        Vehicle existingVehicle = vehicleRepository.findByRegNumber(vehicle.getRegNumber());
-        if (existingVehicle != null) {
-            return new ResponseEntity("Item already exists!", HttpStatus.CONFLICT);
+    public ResponseEntity<?> createNewVehicle(@RequestBody Vehicle vehicle) {
+        Optional<ErrorMessage> optionalErrorMessage = vehicleService.createVehicle(vehicle);
+        if (optionalErrorMessage.isPresent()) {
+            return new ResponseEntity<>(optionalErrorMessage.get(), HttpStatus.BAD_REQUEST);
         } else {
-            final Vehicle newVehicle = new Vehicle();
-            newVehicle.setRegNumber(vehicle.getRegNumber());
-            newVehicle.setVinNumber(vehicle.getVinNumber());
-            newVehicle.setBrand(vehicle.getBrand());
-            newVehicle.setModelName(vehicle.getModelName());
-            newVehicle.setEngineOil(vehicle.getEngineOil());
-            newVehicle.setEngineOilVolume(vehicle.getEngineOilVolume());
-            newVehicle.setHydraulicOil(vehicle.getHydraulicOil());
-            newVehicle.setHydraulicOilVolume(vehicle.getHydraulicOilVolume());
-            newVehicle.setPumpOil(vehicle.getPumpOil());
-            newVehicle.setPumpOilVolume(vehicle.getPumpOilVolume());
-            newVehicle.setDifferentialOil(vehicle.getDifferentialOil());
-            newVehicle.setDifferentialOilVolume(vehicle.getDifferentialOilVolume());
-            newVehicle.setGearBoxOil(vehicle.getGearBoxOil());
-            newVehicle.setGearBoxOilVolume(vehicle.getGearBoxOilVolume());
-            newVehicle.setBrakeFluid(vehicle.getBrakeFluid());
-            newVehicle.setBrakeFluidVolume(vehicle.getBrakeFluidVolume());
-            newVehicle.setAntiFreeze(vehicle.getAntiFreeze());
-            newVehicle.setAntiFreezeVolume(vehicle.getAntiFreezeVolume());
-            newVehicle.setFuel(vehicle.getFuel());
-            newVehicle.setFuelTankVolume(vehicle.getFuelTankVolume());
-            newVehicle.setWaterTankVolume(vehicle.getWaterTankVolume());
-            newVehicle.setFoamTankVolume(vehicle.getFoamTankVolume());
-            newVehicle.setTyre(vehicle.getTyre());
-            vehicleRepository.saveAndFlush(newVehicle);
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(newVehicle);
-        }
-
-    }
-
-    @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<HttpStatus> deleteById(@PathVariable("id") Long id) {
-        try {
-            vehicleRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(vehicle.getId(), HttpStatus.CREATED);
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateVehicle(@RequestBody Vehicle vehicle, @PathVariable("id") Long id) {
+        Optional<ErrorMessage> optionalErrorMessage = vehicleService.updateVehicle(vehicle, id);
+        if (optionalErrorMessage.isPresent()) {
+            return new ResponseEntity<>(optionalErrorMessage.get(), HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<?> deleteById(@PathVariable("id") Long id) {
+        Optional<ErrorMessage> optionalErrorMessage = vehicleService.deleteVehicle(id);
+        if (optionalErrorMessage.isPresent()) {
+            return new ResponseEntity<>(optionalErrorMessage.get(), HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+    }
 }
 
 
