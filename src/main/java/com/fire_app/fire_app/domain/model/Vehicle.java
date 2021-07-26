@@ -1,7 +1,8 @@
 package com.fire_app.fire_app.domain.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 import java.util.Set;
 
@@ -13,62 +14,75 @@ public class Vehicle {
     @GeneratedValue
     private Long id;
 
-    @NotBlank (message = "Register number should not be empty!")
-    @Column(name = "reg_number", unique = true, nullable = false, length = 100)
+    @NotNull
+    @Size(min = 6, max = 10)
+    @Column(name = "reg_number", unique = true)
     private String regNumber;
 
-    @NotBlank (message = "VIN number should not be empty!")
-    @Column(name = "vin_number", unique = true, nullable = false, length = 100)
+    @NotNull
+    @Size(min = 17, max = 30)
+    @Column(name = "vin_number", unique = true)
     private String vinNumber;
 
-    @Column(name = "brand", length = 100)
+    @Size(min = 0, max = 100)
+    @Column(name = "brand")
     private String brand;
 
-    @Column(name = "model_name", length = 100)
+    @Size(min = 0, max = 100)
+    @Column(name = "model_name")
     private String modelName;
 
-    @Column(name = "engine_oil_type", length = 100)
+    @Size(min = 0, max = 100)
+    @Column(name = "engine_oil_type")
     private String engineOil;
 
     @Column(name = "engine_oil_volume")
     private double engineOilVolume;
 
-    @Column(name = "hydraulic_oil_type", length = 100)
+    @Size(min = 0, max = 100)
+    @Column(name = "hydraulic_oil_type")
     private String hydraulicOil;
 
     @Column(name = "hydraulic_oil_volume")
     private double hydraulicOilVolume;
 
-    @Column(name = "pump_oil_type", length = 100)
+    @Size(min = 0, max = 100)
+    @Column(name = "pump_oil_type")
     private String pumpOil;
 
     @Column(name = "pump_oil_volume")
     private double pumpOilVolume;
 
-    @Column(name = "differential_oil", length = 100)
+    @Size(min = 0, max = 100)
+    @Column(name = "differential_oil")
     private String differentialOil;
 
     @Column(name = "differential_oil_volume")
     private double differentialOilVolume;
 
-    @Column(name = "gear_box_oil_type", length = 100)
+    @Size(min = 0, max = 100)
+    @Column(name = "gear_box_oil_type")
     private String gearBoxOil;
 
     @Column(name = "gear_box_oil_volume")
     private double gearBoxOilVolume;
 
-    @Column(name = "brake_fluid_type", length = 100)
+    @Size(min = 0, max = 100)
+    @Column(name = "brake_fluid_type")
     private String brakeFluid;
 
-    @Column(name = "brake_fluid_volume", length = 100)
+
+    @Column(name = "brake_fluid_volume")
     double brakeFluidVolume;
 
+    @Size(min = 0, max = 100)
     @Column(name = "anti_freeze_type")
     private String antiFreeze;
 
     @Column(name = "anti_freeze_volume")
     private double antiFreezeVolume;
 
+    @Size(min = 0, max = 100)
     @Column(name = "fuel_type")
     private String fuel;
 
@@ -81,6 +95,7 @@ public class Vehicle {
     @Column(name = "foam_tank_volume")
     private int foamTankVolume;
 
+    @Size(min = 0, max = 100)
     @Column(name = "tyre")
     private String tyre;
 

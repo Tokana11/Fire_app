@@ -5,7 +5,6 @@ import com.fire_app.fire_app.repository.VehicleRepository;
 import com.fire_app.fire_app.util.ErrorMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;

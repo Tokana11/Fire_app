@@ -1,7 +1,6 @@
 package com.fire_app.fire_app.controllers;
 
 import com.fire_app.fire_app.domain.model.Vehicle;
-import com.fire_app.fire_app.repository.VehicleRepository;
 import com.fire_app.fire_app.service.VehicleService;
 import com.fire_app.fire_app.util.ErrorMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,7 +39,7 @@ public class VehicleController {
         if (vehicle.isPresent()) {
             return new ResponseEntity<>(vehicle.get(), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(new ErrorMessage("Item with id: " + id + " not found"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ErrorMessage("Vehicle with id: " + id + " not found"), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -51,7 +49,7 @@ public class VehicleController {
         if (vehicle.isPresent()) {
             return new ResponseEntity<>(vehicle, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(new ErrorMessage("Item with register number: " + regNumber + " not found !"),
+            return new ResponseEntity<>(new ErrorMessage("Vehicle with register number: " + regNumber + " not found !"),
                     HttpStatus.NOT_FOUND);
         }
     }

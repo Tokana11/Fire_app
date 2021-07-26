@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.sql.Date;
 import java.util.Objects;
 
@@ -14,6 +15,7 @@ public class Repair {
     @GeneratedValue
     private Long Id;
 
+    @NotBlank
     @Column(name = "repair_description")
     private String repairDescription;
 

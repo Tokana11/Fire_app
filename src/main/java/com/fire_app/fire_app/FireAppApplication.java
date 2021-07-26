@@ -29,9 +29,9 @@ public class FireAppApplication {
             veh1.setRegNumber("РВ3628РМ");
             veh2.setRegNumber("PB1231PM");
             veh3.setRegNumber("РВ4567РМ");
-            veh1.setVinNumber("VIN12312312");
-            veh2.setVinNumber("VIN33333333");
-            veh3.setVinNumber("VIN55555555");
+            veh1.setVinNumber("VIN123123121221212121212212121");
+            veh2.setVinNumber("VIN333333333333333333333333333");
+            veh3.setVinNumber("VIN555555555555555555555555555");
 
             repo.save(veh1);
             repo.save(veh2);
@@ -42,14 +42,13 @@ public class FireAppApplication {
     }
 
     @Bean
-    public CommandLineRunner repairsData (RepairsRepository repo1, VehicleRepository repo) {
+    public CommandLineRunner repairsData(RepairsRepository repo1, VehicleRepository repo) {
         return args -> {
 
             Vehicle veh1 = new Vehicle();
             veh1.setRegNumber("PB0007PM");
-            veh1.setVinNumber("123435565");
+            veh1.setVinNumber("123456789101112131415");
             repo.save(veh1);
-
 
 
             Repair repairVeh1 = new Repair();

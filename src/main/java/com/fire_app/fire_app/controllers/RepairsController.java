@@ -1,9 +1,8 @@
 package com.fire_app.fire_app.controllers;
 
-import com.fire_app.fire_app.repository.RepairsRepository;
-import com.fire_app.fire_app.repository.VehicleRepository;
 import com.fire_app.fire_app.domain.model.Repair;
-import com.fire_app.fire_app.domain.model.Vehicle;
+import com.fire_app.fire_app.service.RepairsService;
+import com.fire_app.fire_app.util.ErrorMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,69 +21,76 @@ import java.util.Set;
 @RequestMapping(value = "/repair")
 public class RepairsController {
 
-    private final RepairsRepository repairsRepository;
-    private final VehicleRepository vehicleRepository;
+    private final RepairsService repairsService;
 
     @Autowired
-    public RepairsController(RepairsRepository repairsRepository, VehicleRepository vehicleRepository) {
-        this.repairsRepository = repairsRepository;
-        this.vehicleRepository = vehicleRepository;
+    public RepairsController(RepairsService repairsService) {
+        this.repairsService = repairsService;
     }
 
     @GetMapping
     public ResponseEntity<List<Repair>> findAll() {
-        List<Repair> repairs = repairsRepository.findAll();
-        return new ResponseEntity<>(repairs, HttpStatus.OK);
+        return new ResponseEntity<>(repairsService.getAllRepairs(), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/vehicle/{id}")
-    public ResponseEntity<Set<Repair>> getRepairsByVehicleId(@PathVariable(name = "id") Long id) {
-        Optional<Vehicle> vehicle = vehicleRepository.findById(id);
-        if (vehicle.isPresent()) {
-            Set<Repair> repairs = repairsRepository.findRepairsByVehicleId(id);
+    @GetMapping(value = {"{id}"})
+    public ResponseEntity<?> findById(@PathVariable(name = "id") Long id) {
+        Optional<Repair> repair = repairsService.getRepairById(id);
+        if (repair.isPresent()) {
+            return new ResponseEntity<>(repair.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new ErrorMessage("Repair with id: " + id + " not found!"), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping(value = "/byVehicleId/{id}")
+    public ResponseEntity<?> getRepairsByVehicleId(@PathVariable(name = "id") Long id) {
+        Optional<Set<Repair>> repairs = Optional.ofNullable(repairsService.getRepairsByVehicleId(id));
+        if (repairs.isPresent()) {
             return new ResponseEntity<>(repairs, HttpStatus.OK);
         } else {
-            return new ResponseEntity("No records for vehicle with id: " + id + " found!", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("No vehicle with id: " + id + " found!", HttpStatus.BAD_REQUEST);
         }
     }
 
-    @GetMapping(value = "/vehicle/regNumber/{regNumber}")
-    public ResponseEntity<Set<Repair>> getRepairsByRegNumber(@PathVariable(name = "regNumber") String regNumber) {
-        if (regNumber.isBlank() && !Character.isLetter(regNumber.charAt(0))) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        Optional<Vehicle> vehicle = vehicleRepository.findOptionalByRegNumber(regNumber);
-        if (vehicle.isPresent()) {
-            Set<Repair> repairs = repairsRepository.findRepairsByVehicleRegNumber(regNumber);
+    @GetMapping(value = "/byVehicleRegNumber/{regNumber}")
+    public ResponseEntity<?> getRepairsByRegNumber(@PathVariable(name = "regNumber") String regNumber) {
+        Optional<Set<Repair>> repairs = Optional.ofNullable(repairsService.getRepairByVehicleRegNumber(regNumber));
+        if (repairs.isPresent()) {
             return new ResponseEntity<>(repairs, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("No vehicle with register number: " + regNumber + " found!", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity("No records for vehicle with register number: " +
-                regNumber + " found!", HttpStatus.NOT_FOUND);
     }
 
     @PostMapping
-    public ResponseEntity<Repair> createNewRepairRecord(@RequestBody Repair repair) {
-        repairsRepository.save(repair);
-        return new ResponseEntity<>(repair, HttpStatus.OK);
+    public ResponseEntity<?> createRepairRecord(@RequestBody Repair repair) {
+        Optional<ErrorMessage> optionalErrorMessage = repairsService.createRepairRecord(repair);
+        if (optionalErrorMessage.isPresent()) {
+            return new ResponseEntity<>(optionalErrorMessage.get(), HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(repair.getId(), HttpStatus.OK);
+        }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Repair> updateRepairRecord(@PathVariable(name = "id") Long id,
-                                                     @RequestBody Repair repair) {
-    return null;
-    // TODO fix it
-
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity deleteRepairRecordById(@PathVariable(name = "id") Long id) {
-        Optional<Repair> repairRecord = repairsRepository.findById(id);
-        if (repairRecord.isPresent()) {
-            repairsRepository.deleteById(id);
-            return new ResponseEntity<>(repairRecord, HttpStatus.OK);
+    public ResponseEntity<?> updateRepairRecord(@RequestBody Repair repair, @PathVariable Long id) {
+        Optional<ErrorMessage> optionalErrorMessage = repairsService.updateRepairRecord(repair, id);
+        if (optionalErrorMessage.isPresent()) {
+            return new ResponseEntity<>(optionalErrorMessage.get(), HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(HttpStatus.OK);
         }
-        return new ResponseEntity<>("No repair record with id: " + id + " found!", HttpStatus.BAD_REQUEST);
     }
 
-    // UPDATE -> PUT; CREATE -> POST;
+    @DeleteMapping("/id")
+    public ResponseEntity<?> deleteRepairRecord(@PathVariable Long id) {
+        Optional<ErrorMessage> optionalErrorMessage = repairsService.deleteRepairRecord(id);
+        if (optionalErrorMessage.isPresent()) {
+            return new ResponseEntity<>(optionalErrorMessage.get(), HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+    }
+    // TODO Delete repair not working
 }
