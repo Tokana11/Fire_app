@@ -83,7 +83,7 @@ public class RepairsController {
         }
     }
 
-    @DeleteMapping("/id")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteRepairRecord(@PathVariable Long id) {
         Optional<ErrorMessage> optionalErrorMessage = repairsService.deleteRepairRecord(id);
         if (optionalErrorMessage.isPresent()) {
@@ -92,5 +92,5 @@ public class RepairsController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
-    // TODO Delete repair not working
+
 }

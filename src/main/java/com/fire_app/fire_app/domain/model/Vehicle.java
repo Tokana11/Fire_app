@@ -1,6 +1,10 @@
 package com.fire_app.fire_app.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Objects;
@@ -24,80 +28,24 @@ public class Vehicle {
     @Column(name = "vin_number", unique = true)
     private String vinNumber;
 
-    @Size(min = 0, max = 100)
+    @Column(name = "insurance_number")
+    private String insuranceNumber;
+
+    @NotNull
     @Column(name = "brand")
     private String brand;
 
-    @Size(min = 0, max = 100)
-    @Column(name = "model_name")
-    private String modelName;
+    @NotNull
+    @Column(name = "model")
+    private String model;
 
-    @Size(min = 0, max = 100)
-    @Column(name = "engine_oil_type")
-    private String engineOil;
+    @NotNull
+    @Column(name = "mileage")
+    private int mileage;
 
-    @Column(name = "engine_oil_volume")
-    private double engineOilVolume;
-
-    @Size(min = 0, max = 100)
-    @Column(name = "hydraulic_oil_type")
-    private String hydraulicOil;
-
-    @Column(name = "hydraulic_oil_volume")
-    private double hydraulicOilVolume;
-
-    @Size(min = 0, max = 100)
-    @Column(name = "pump_oil_type")
-    private String pumpOil;
-
-    @Column(name = "pump_oil_volume")
-    private double pumpOilVolume;
-
-    @Size(min = 0, max = 100)
-    @Column(name = "differential_oil")
-    private String differentialOil;
-
-    @Column(name = "differential_oil_volume")
-    private double differentialOilVolume;
-
-    @Size(min = 0, max = 100)
-    @Column(name = "gear_box_oil_type")
-    private String gearBoxOil;
-
-    @Column(name = "gear_box_oil_volume")
-    private double gearBoxOilVolume;
-
-    @Size(min = 0, max = 100)
-    @Column(name = "brake_fluid_type")
-    private String brakeFluid;
-
-
-    @Column(name = "brake_fluid_volume")
-    double brakeFluidVolume;
-
-    @Size(min = 0, max = 100)
-    @Column(name = "anti_freeze_type")
-    private String antiFreeze;
-
-    @Column(name = "anti_freeze_volume")
-    private double antiFreezeVolume;
-
-    @Size(min = 0, max = 100)
-    @Column(name = "fuel_type")
-    private String fuel;
-
-    @Column(name = "fuel_tank_volume")
-    private double fuelTankVolume;
-
-    @Column(name = "water_tank_volume")
-    private int waterTankVolume;
-
-    @Column(name = "foam_tank_volume")
-    private int foamTankVolume;
-
-    @Size(min = 0, max = 100)
-    @Column(name = "tyre")
-    private String tyre;
+    @NotNull
+    @Column(name = "engine_hours_meter")
+    private double engineHoursMeter;
 
     @OneToMany(mappedBy = "vehicle")
     private Set<Repair> repairs;
@@ -108,17 +56,22 @@ public class Vehicle {
     @OneToMany(mappedBy = "vehicle")
     private Set<Fueling> fuelings;
 
+    @ManyToOne
+    @JoinColumn(name = "specifications_id")
+    @JsonIgnoreProperties(value = "vehicles")
+    private VehicleSpecs vehicleSpecs;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Vehicle vehicle = (Vehicle) o;
-        return Double.compare(vehicle.engineOilVolume, engineOilVolume) == 0 && Double.compare(vehicle.hydraulicOilVolume, hydraulicOilVolume) == 0 && Double.compare(vehicle.pumpOilVolume, pumpOilVolume) == 0 && Double.compare(vehicle.differentialOilVolume, differentialOilVolume) == 0 && Double.compare(vehicle.gearBoxOilVolume, gearBoxOilVolume) == 0 && Double.compare(vehicle.brakeFluidVolume, brakeFluidVolume) == 0 && Double.compare(vehicle.antiFreezeVolume, antiFreezeVolume) == 0 && Double.compare(vehicle.fuelTankVolume, fuelTankVolume) == 0 && waterTankVolume == vehicle.waterTankVolume && foamTankVolume == vehicle.foamTankVolume && id.equals(vehicle.id) && regNumber.equals(vehicle.regNumber) && vinNumber.equals(vehicle.vinNumber) && Objects.equals(brand, vehicle.brand) && Objects.equals(modelName, vehicle.modelName) && Objects.equals(engineOil, vehicle.engineOil) && Objects.equals(hydraulicOil, vehicle.hydraulicOil) && Objects.equals(pumpOil, vehicle.pumpOil) && Objects.equals(differentialOil, vehicle.differentialOil) && Objects.equals(gearBoxOil, vehicle.gearBoxOil) && Objects.equals(brakeFluid, vehicle.brakeFluid) && Objects.equals(antiFreeze, vehicle.antiFreeze) && Objects.equals(fuel, vehicle.fuel) && Objects.equals(tyre, vehicle.tyre);
+        return id.equals(vehicle.id) && regNumber.equals(vehicle.regNumber) && vinNumber.equals(vehicle.vinNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, regNumber, vinNumber, brand, modelName, engineOil, engineOilVolume, hydraulicOil, hydraulicOilVolume, pumpOil, pumpOilVolume, differentialOil, differentialOilVolume, gearBoxOil, gearBoxOilVolume, brakeFluid, brakeFluidVolume, antiFreeze, antiFreezeVolume, fuel, fuelTankVolume, waterTankVolume, foamTankVolume, tyre);
+        return Objects.hash(id, regNumber, vinNumber, brand, model);
     }
 
     public Long getId() {
@@ -145,6 +98,14 @@ public class Vehicle {
         this.vinNumber = vinNumber;
     }
 
+    public String getInsuranceNumber() {
+        return insuranceNumber;
+    }
+
+    public void setInsuranceNumber(String insuranceNumber) {
+        this.insuranceNumber = insuranceNumber;
+    }
+
     public String getBrand() {
         return brand;
     }
@@ -153,164 +114,28 @@ public class Vehicle {
         this.brand = brand;
     }
 
-    public String getModelName() {
-        return modelName;
+    public String getModel() {
+        return model;
     }
 
-    public void setModelName(String modelName) {
-        this.modelName = modelName;
+    public void setModel(String model) {
+        this.model = model;
     }
 
-    public String getEngineOil() {
-        return engineOil;
+    public int getMileage() {
+        return mileage;
     }
 
-    public void setEngineOil(String engineOil) {
-        this.engineOil = engineOil;
+    public void setMileage(int mileage) {
+        this.mileage = mileage;
     }
 
-    public double getEngineOilVolume() {
-        return engineOilVolume;
+    public double getEngineHoursMeter() {
+        return engineHoursMeter;
     }
 
-    public void setEngineOilVolume(double engineOilVolume) {
-        this.engineOilVolume = engineOilVolume;
-    }
-
-    public String getHydraulicOil() {
-        return hydraulicOil;
-    }
-
-    public void setHydraulicOil(String hydraulicOil) {
-        this.hydraulicOil = hydraulicOil;
-    }
-
-    public double getHydraulicOilVolume() {
-        return hydraulicOilVolume;
-    }
-
-    public void setHydraulicOilVolume(double hydraulicOilVolume) {
-        this.hydraulicOilVolume = hydraulicOilVolume;
-    }
-
-    public String getPumpOil() {
-        return pumpOil;
-    }
-
-    public void setPumpOil(String pumpOil) {
-        this.pumpOil = pumpOil;
-    }
-
-    public double getPumpOilVolume() {
-        return pumpOilVolume;
-    }
-
-    public void setPumpOilVolume(double pumpOilVolume) {
-        this.pumpOilVolume = pumpOilVolume;
-    }
-
-    public String getDifferentialOil() {
-        return differentialOil;
-    }
-
-    public void setDifferentialOil(String differentialOil) {
-        this.differentialOil = differentialOil;
-    }
-
-    public double getDifferentialOilVolume() {
-        return differentialOilVolume;
-    }
-
-    public void setDifferentialOilVolume(double differentialOilVolume) {
-        this.differentialOilVolume = differentialOilVolume;
-    }
-
-    public String getGearBoxOil() {
-        return gearBoxOil;
-    }
-
-    public void setGearBoxOil(String gearBoxOil) {
-        this.gearBoxOil = gearBoxOil;
-    }
-
-    public double getGearBoxOilVolume() {
-        return gearBoxOilVolume;
-    }
-
-    public void setGearBoxOilVolume(double gearBoxOilVolume) {
-        this.gearBoxOilVolume = gearBoxOilVolume;
-    }
-
-    public String getBrakeFluid() {
-        return brakeFluid;
-    }
-
-    public void setBrakeFluid(String brakeFluid) {
-        this.brakeFluid = brakeFluid;
-    }
-
-    public double getBrakeFluidVolume() {
-        return brakeFluidVolume;
-    }
-
-    public void setBrakeFluidVolume(double brakeFluidVolume) {
-        this.brakeFluidVolume = brakeFluidVolume;
-    }
-
-    public String getAntiFreeze() {
-        return antiFreeze;
-    }
-
-    public void setAntiFreeze(String antiFreeze) {
-        this.antiFreeze = antiFreeze;
-    }
-
-    public double getAntiFreezeVolume() {
-        return antiFreezeVolume;
-    }
-
-    public void setAntiFreezeVolume(double antiFreezeVolume) {
-        this.antiFreezeVolume = antiFreezeVolume;
-    }
-
-    public String getFuel() {
-        return fuel;
-    }
-
-    public void setFuel(String fuel) {
-        this.fuel = fuel;
-    }
-
-    public double getFuelTankVolume() {
-        return fuelTankVolume;
-    }
-
-    public void setFuelTankVolume(double fuelTankVolume) {
-        this.fuelTankVolume = fuelTankVolume;
-    }
-
-    public int getWaterTankVolume() {
-        return waterTankVolume;
-    }
-
-    public void setWaterTankVolume(int waterTankVolume) {
-        this.waterTankVolume = waterTankVolume;
-    }
-
-    public int getFoamTankVolume() {
-        return foamTankVolume;
-    }
-
-    public void setFoamTankVolume(int foamTankVolume) {
-        this.foamTankVolume = foamTankVolume;
-    }
-
-    public String getTyre() {
-        return tyre;
-    }
-
-    public void setTyre(String tyre) {
-        this.tyre = tyre;
+    public void setEngineHoursMeter(double engineHoursMeter) {
+        this.engineHoursMeter = engineHoursMeter;
     }
 
     public Set<Repair> getRepairs() {
@@ -335,5 +160,13 @@ public class Vehicle {
 
     public void setFuelings(Set<Fueling> fuelings) {
         this.fuelings = fuelings;
+    }
+
+    public VehicleSpecs getVehicleSpecs() {
+        return vehicleSpecs;
+    }
+
+    public void setVehicleSpecs(VehicleSpecs vehicleSpecs) {
+        this.vehicleSpecs = vehicleSpecs;
     }
 }

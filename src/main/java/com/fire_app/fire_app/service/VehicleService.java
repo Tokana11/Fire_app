@@ -25,7 +25,6 @@ public class VehicleService {
         this.validator = validator;
     }
 
-    @Autowired
 
     public List<Vehicle> getAllVehicles() {
         return vehicleRepository.findAll();
@@ -57,7 +56,12 @@ public class VehicleService {
         if (optionalVehicle.isPresent()) {
             Vehicle existingVehicle = optionalVehicle.get();
             existingVehicle.setRegNumber(vehicle.getRegNumber());
-            // TODO ALL fields...
+            existingVehicle.setVinNumber(vehicle.getVinNumber());
+            existingVehicle.setInsuranceNumber(vehicle.getInsuranceNumber());
+            existingVehicle.setBrand(vehicle.getBrand());
+            existingVehicle.setModel(vehicle.getModel());
+            existingVehicle.setMileage(vehicle.getMileage());
+            existingVehicle.setEngineHoursMeter(vehicle.getEngineHoursMeter());
             try {
                 vehicleRepository.save(existingVehicle);
             } catch (Exception e) {
@@ -85,7 +89,7 @@ public class VehicleService {
             for (ConstraintViolation<Vehicle> constraintViolation : constraintViolations) {
                 failedValidations.add(constraintViolation.getMessage());
             }
-            return Optional.of(new ErrorMessage("Validation failure!", failedValidations));
+            return Optional.of(new ErrorMessage("Vehicle validation failure!", failedValidations));
         }
         return Optional.empty();
     }

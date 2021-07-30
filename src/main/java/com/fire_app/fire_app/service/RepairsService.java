@@ -79,7 +79,7 @@ public class RepairsService {
             try {
                 repairsRepository.save(existingRepair);
             } catch (Exception e) {
-                Optional.of(new ErrorMessage("There is a problem saving the repair!"));
+               return Optional.of(new ErrorMessage("There is a problem saving the repair!"));
             }
         }
         return Optional.empty();
@@ -89,7 +89,7 @@ public class RepairsService {
         try {
             repairsRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
-            return Optional.of(new ErrorMessage("No repair record with id:" + id + " exists! "));
+            return Optional.of(new ErrorMessage("No repair record with id: " + id + " exists!"));
         }
         return Optional.empty();
     }
@@ -101,7 +101,7 @@ public class RepairsService {
             for (ConstraintViolation<Repair> constraintViolation : constraintViolations) {
                 failedValidations.add(constraintViolation.getMessage());
             }
-            return Optional.of(new ErrorMessage("Validation failure!", failedValidations));
+            return Optional.of(new ErrorMessage("Repair validation failure!", failedValidations));
         }
         return Optional.empty();
     }
