@@ -1,8 +1,10 @@
 package com.fire_app.fire_app;
 
+import com.fire_app.fire_app.domain.model.Fueling;
 import com.fire_app.fire_app.domain.model.Repair;
 import com.fire_app.fire_app.domain.model.Vehicle;
 import com.fire_app.fire_app.domain.model.VehicleSpecs;
+import com.fire_app.fire_app.repository.FuelingRepository;
 import com.fire_app.fire_app.repository.RepairsRepository;
 import com.fire_app.fire_app.repository.VehicleRepository;
 import com.fire_app.fire_app.repository.VehicleSpecsRepository;
@@ -22,7 +24,7 @@ public class FireAppApplication {
     }
 
     @Bean
-    public CommandLineRunner truckData(VehicleRepository repo, VehicleSpecsRepository repo1) {
+    public CommandLineRunner truckData(VehicleRepository repo, VehicleSpecsRepository repo1, FuelingRepository repo2) {
         return args -> {
 
 
@@ -144,6 +146,42 @@ public class FireAppApplication {
             repo.save(veh3);
             repo.save(veh4);
             repo.save(veh5);
+
+            Fueling fueling = new Fueling();
+            fueling.setQuantity(79.1);
+            fueling.setPrice(158.73);
+            fueling.setDate(new Date(new SimpleDateFormat("yyyyMMdd").parse("20210606").toInstant().toEpochMilli()));
+            fueling.setVehicle(veh1);
+            repo2.save(fueling);
+
+            Fueling fueling1 = new Fueling();
+            fueling1.setQuantity(80);
+            fueling1.setPrice(160);
+            fueling1.setDate(new Date(new SimpleDateFormat("yyyyMMdd").parse("20210606").toInstant().toEpochMilli()));
+            fueling1.setVehicle(veh1);
+            repo2.save(fueling1);
+
+            Fueling fueling2 = new Fueling();
+            fueling2.setQuantity(79.1);
+            fueling2.setPrice(158.73);
+            fueling2.setDate(new Date(new SimpleDateFormat("yyyyMMdd").parse("20210803").toInstant().toEpochMilli()));
+            fueling2.setVehicle(veh1);
+            repo2.save(fueling2);
+
+            Fueling fueling3 = new Fueling();
+            fueling3.setQuantity(40);
+            fueling3.setPrice(82.22);
+            fueling3.setDate(new Date(new SimpleDateFormat("yyyyMMdd").parse("20210803").toInstant().toEpochMilli()));
+            fueling3.setVehicle(veh2);
+            repo2.save(fueling3);
+
+            Fueling fueling4 = new Fueling();
+            fueling4.setQuantity(31);
+            fueling4.setPrice(68.82);
+            fueling4.setDate(new Date(new SimpleDateFormat("yyyyMMdd").parse("20210803").toInstant().toEpochMilli()));
+            fueling4.setVehicle(veh2);
+            repo2.save(fueling4);
+
 
 
         };

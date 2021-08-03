@@ -1,5 +1,7 @@
 package com.fire_app.fire_app.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
@@ -22,6 +24,7 @@ public class Fueling {
 
     @ManyToOne
     @JoinColumn(name = "vehicle_id")
+    @JsonBackReference
     private Vehicle vehicle;
 
     @Override

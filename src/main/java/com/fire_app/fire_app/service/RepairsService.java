@@ -81,6 +81,8 @@ public class RepairsService {
             } catch (Exception e) {
                return Optional.of(new ErrorMessage("There is a problem saving the repair!"));
             }
+        }else {
+            return Optional.of(new ErrorMessage("There is no repair record with id: " + id + " found!"));
         }
         return Optional.empty();
     }
