@@ -10,46 +10,46 @@ public class Service {
     @GeneratedValue
     private Long Id;
 
-    @Column(name = "engine_oil_type", length = 100)
+    @Column(name = "engine_oil_type")
     private String engineOil;
 
     @Column(name = "engine_oil_volume")
     private double engineOilVolume;
 
-    @Column(name = "hydraulic_oil_type", length = 100)
+    @Column(name = "hydraulic_oil_type")
     private String hydraulicOil;
 
     @Column(name = "hydraulic_oil_volume")
     private double hydraulicOilVolume;
 
-    @Column(name = "pump_oil_type", length = 100)
+    @Column(name = "pump_oil_type")
     private String pumpOil;
 
     @Column(name = "pump_oil_volume")
     private double pumpOilVolume;
 
-    @Column(name = "diferential_oil", length = 100)
-    private String diferentialOil;
+    @Column(name = "differential_oil")
+    private String differentialOil;
 
-    @Column(name = "diferential_oil_volume")
-    private double diferentialOilVolume;
+    @Column(name = "differential_oil_volume")
+    private double differentialOilVolume;
 
-    @Column(name = "gear_box_oil_type", length = 100)
+    @Column(name = "gear_box_oil_type")
     private String gearBoxOil;
 
     @Column(name = "gear_box_oil_volume")
     private double gearBoxOilVolume;
 
-    @Column(name = "brake_fluid_type", length = 100)
+    @Column(name = "brake_fluid_type")
     private String brakeFluid;
 
-    @Column(name = "brake_fluid_volume", length = 100)
+    @Column(name = "brake_fluid_volume")
     double brakeFluidVolume;
 
-    @Column(name = "antifreez_type")
+    @Column(name = "antifreeze_type")
     private String antiFreeze;
 
-    @Column(name = "antifreez_volume")
+    @Column(name = "antifreeze_volume")
     private double antiFreezeVolume;
 
     @ManyToOne
@@ -64,7 +64,7 @@ public class Service {
         return Double.compare(service.engineOilVolume, engineOilVolume) == 0 &&
                 Double.compare(service.hydraulicOilVolume, hydraulicOilVolume) == 0 &&
                 Double.compare(service.pumpOilVolume, pumpOilVolume) == 0 &&
-                Double.compare(service.diferentialOilVolume, diferentialOilVolume) == 0 &&
+                Double.compare(service.differentialOilVolume, differentialOilVolume) == 0 &&
                 Double.compare(service.gearBoxOilVolume, gearBoxOilVolume) == 0 &&
                 Double.compare(service.brakeFluidVolume, brakeFluidVolume) == 0 &&
                 Double.compare(service.antiFreezeVolume, antiFreezeVolume) == 0 &&
@@ -72,7 +72,7 @@ public class Service {
                 Objects.equals(engineOil, service.engineOil) &&
                 Objects.equals(hydraulicOil, service.hydraulicOil) &&
                 Objects.equals(pumpOil, service.pumpOil) &&
-                Objects.equals(diferentialOil, service.diferentialOil) &&
+                Objects.equals(differentialOil, service.differentialOil) &&
                 Objects.equals(gearBoxOil, service.gearBoxOil) &&
                 Objects.equals(brakeFluid, service.brakeFluid) &&
                 Objects.equals(antiFreeze, service.antiFreeze) &&
@@ -81,7 +81,7 @@ public class Service {
 
     @Override
     public int hashCode() {
-        return Objects.hash(Id, engineOil, engineOilVolume, hydraulicOil, hydraulicOilVolume, pumpOil, pumpOilVolume, diferentialOil, diferentialOilVolume, gearBoxOil, gearBoxOilVolume, brakeFluid, brakeFluidVolume, antiFreeze, antiFreezeVolume, vehicle);
+        return Objects.hash(Id, engineOil, engineOilVolume, hydraulicOil, hydraulicOilVolume, pumpOil, pumpOilVolume, differentialOil, differentialOilVolume, gearBoxOil, gearBoxOilVolume, brakeFluid, brakeFluidVolume, antiFreeze, antiFreezeVolume, vehicle);
     }
 
     public Long getId() {
@@ -140,20 +140,20 @@ public class Service {
         this.pumpOilVolume = pumpOilVolume;
     }
 
-    public String getDiferentialOil() {
-        return diferentialOil;
+    public String getDifferentialOil() {
+        return differentialOil;
     }
 
-    public void setDiferentialOil(String diferentialOil) {
-        this.diferentialOil = diferentialOil;
+    public void setDifferentialOil(String differentialOil) {
+        this.differentialOil = differentialOil;
     }
 
-    public double getDiferentialOilVolume() {
-        return diferentialOilVolume;
+    public double getDifferentialOilVolume() {
+        return differentialOilVolume;
     }
 
-    public void setDiferentialOilVolume(double diferentialOilVolume) {
-        this.diferentialOilVolume = diferentialOilVolume;
+    public void setDifferentialOilVolume(double differentialOilVolume) {
+        this.differentialOilVolume = differentialOilVolume;
     }
 
     public String getGearBoxOil() {

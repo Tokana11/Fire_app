@@ -56,6 +56,9 @@ public class Vehicle {
     @OneToMany(mappedBy = "vehicle")
     private Set<Fueling> fuelings;
 
+    @OneToMany(mappedBy = "vehicle")
+    private Set<Trip> trips;
+
     @ManyToOne
     @JoinColumn(name = "specifications_id")
     @JsonIgnoreProperties(value = "vehicles")
@@ -160,6 +163,15 @@ public class Vehicle {
 
     public void setFuelings(Set<Fueling> fuelings) {
         this.fuelings = fuelings;
+    }
+
+
+    public Set<Trip> getTrips() {
+        return trips;
+    }
+
+    public void setTrips(Set<Trip> trips) {
+        this.trips = trips;
     }
 
     public VehicleSpecs getVehicleSpecs() {

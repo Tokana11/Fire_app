@@ -4,6 +4,7 @@ package com.fire_app.fire_app.domain.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -89,7 +90,21 @@ public class VehicleSpecs {
     @OneToMany(mappedBy = "vehicleSpecs")
     @JsonIgnoreProperties("vehicleSpecs")
     private Set<Vehicle> vehicles;
-//    //TODO is it necessary !
+    //TODO is it necessary !
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        VehicleSpecs that = (VehicleSpecs) o;
+        return Double.compare(that.engineOilVolume, engineOilVolume) == 0 && Double.compare(that.hydraulicOilVolume, hydraulicOilVolume) == 0 && Double.compare(that.pumpOilVolume, pumpOilVolume) == 0 && Double.compare(that.differentialOilVolume, differentialOilVolume) == 0 && Double.compare(that.gearBoxOilVolume, gearBoxOilVolume) == 0 && Double.compare(that.brakeFluidVolume, brakeFluidVolume) == 0 && Double.compare(that.antiFreezeVolume, antiFreezeVolume) == 0 && Double.compare(that.windscreenFluidVolume, windscreenFluidVolume) == 0 && Double.compare(that.fuelTankVolume, fuelTankVolume) == 0 && waterTankVolume == that.waterTankVolume && foamTankVolume == that.foamTankVolume && id.equals(that.id) && Objects.equals(engineOil, that.engineOil) && Objects.equals(hydraulicOil, that.hydraulicOil) && Objects.equals(pumpOil, that.pumpOil) && Objects.equals(differentialOil, that.differentialOil) && Objects.equals(gearBoxOil, that.gearBoxOil) && Objects.equals(brakeFluid, that.brakeFluid) && Objects.equals(antiFreeze, that.antiFreeze) && Objects.equals(fuel, that.fuel) && Objects.equals(fuelFilter, that.fuelFilter) && Objects.equals(airFilter, that.airFilter) && Objects.equals(oilFilter, that.oilFilter) && Objects.equals(airConditionFilter, that.airConditionFilter) && Objects.equals(tyre, that.tyre);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, engineOil, engineOilVolume, hydraulicOil, hydraulicOilVolume, pumpOil, pumpOilVolume, differentialOil, differentialOilVolume, gearBoxOil, gearBoxOilVolume, brakeFluid, brakeFluidVolume, antiFreeze, antiFreezeVolume, windscreenFluidVolume, fuel, fuelTankVolume, waterTankVolume, foamTankVolume, fuelFilter, airFilter, oilFilter, airConditionFilter, tyre);
+    }
 
 
     public Long getId() {
